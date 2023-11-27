@@ -94,19 +94,21 @@ public class SecurityController {
 		   
 		User user = userRepo.findByusername(name);   
 		
-		if(user.getRoles().equals("MANAGER") || user.getRoles().equals("ADMIN")) {
+		if(!(user.getRoles().equalsIgnoreCase("MANAGER") || user.getRoles().equalsIgnoreCase("ADMIN"))) {
+			
+			throw new AccessRoleException();
+			
+		}
+        else {
 			
 			product = productRepo.findAll();
-			
 		}
 		
 		
 	   }
-		else {
-			throw new AccessRoleException();
-		}
+		
 	   
-	  //Collections.sort(product);
+	    Collections.sort(product);
 	   
 		return new ResponseEntity<List<Product>>(product, HttpStatus.OK);
 	}
